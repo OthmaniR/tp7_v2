@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'student_management.dart'; // Import your StudentManagementScreen file
 
-class GroupsManagementScreen extends StatefulWidget {
+class DepartmentPage extends StatefulWidget {
   @override
-  _GroupsManagementScreenState createState() => _GroupsManagementScreenState();
+  _DepartmentPageState createState() => _DepartmentPageState();
 }
 
-class _GroupsManagementScreenState extends State<GroupsManagementScreen> {
+class _DepartmentPageState extends State<DepartmentPage> {
   List<Map<String, dynamic>> classes = [];
   List<String> departments = ['INFO', 'GC']; // Your list of departments
   String selectedDepartment = 'INFO'; // Default selected department
@@ -21,7 +22,7 @@ class _GroupsManagementScreenState extends State<GroupsManagementScreen> {
   Future<void> fetchClassesFromBackend(String department) async {
     try {
       final response = await http.get(Uri.parse('http://10.0.2.2:8082/classes/depart/$department'));
-      print('Server Response: ${response.body}');
+
       if (response.statusCode == 200) {
         List<dynamic> data = json.decode(response.body);
         if (data.isNotEmpty) {
@@ -39,12 +40,11 @@ class _GroupsManagementScreenState extends State<GroupsManagementScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Classes'),
+        title: Text('Departments'),
       ),
       body: Center(
         child: Column(
@@ -80,6 +80,19 @@ class _GroupsManagementScreenState extends State<GroupsManagementScreen> {
                   return ListTile(
                     title: Text(classes[index]['nomClass'] ?? 'N/A'),
                     subtitle: Text('ID: ${classes[index]['codClass'] ?? 'N/A'}'),
+                    onTap: () {
+                      // Navigate to StudentManagementScreen with selected class details
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StudentManagementScreen(
+                            classId: classes[index]['codClass'].toString(),
+                            className: classes[index]['nomClass'] ?? 'N/A',
+                          ),
+                        ),
+                      );
+
+                    },
                   );
                 },
               ),

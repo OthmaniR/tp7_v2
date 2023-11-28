@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tp7/student_management.dart';
 
+
+import 'DepartmentPage.dart';
+import 'department_model.dart';
 import 'groups_management.dart';
 
 class Dashboard extends StatelessWidget {
@@ -44,7 +47,22 @@ class Dashboard extends StatelessWidget {
                 Navigator.pop(context); // Close the drawer
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => StudentManagementScreen()),
+                  MaterialPageRoute(builder: (context) => StudentManagementScreen(classId: '', className: '',)),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.business),
+              title: Text('Manage Departments'),
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DepartmentPage(
+
+                    ),
+                  ),
                 );
               },
             ),
